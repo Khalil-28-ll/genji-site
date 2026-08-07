@@ -1,7 +1,58 @@
+import { Link } from 'react-router-dom';
 import MindMap from './MindMap';
-import { RELATION_TYPE_LABEL, type RelationType } from '../data/characters';
+import { RELATION_STYLE, RELATION_TYPE_LABEL } from '../data/characters';
 
-const LEGEND: RelationType[] = ['blood', 'marriage', 'love', 'adoption', 'rivalry', 'servant', 'friend'];
+const LEGEND = ['blood', 'marriage', 'love', 'adoption', 'rivalry', 'servant', 'friend'] as const;
+
+function dashToCssStyle(dash?: string) {
+  if (!dash) return 'solid';
+  if (dash === '2 6') return 'dotted';
+  return 'dashed';
+}
+
+const FAMOUS_EVALUATIONS = [
+  {
+    quote:
+      '本居宣长认为，《源氏物语》的宗旨不在劝善惩恶，而在让人“知物哀”——能感知人情物态之哀，即为有心之人。（转述）',
+    source: '本居宣长《源氏物語玉の小櫛》',
+    link: 'https://ja.wikipedia.org/wiki/本居宣長',
+    linkLabel: '本居宣长 · 维基百科（资料页）',
+  },
+  {
+    quote:
+      '“紫式部怜惜浮舟，使她悄悄走向清净之界。她虽然写完了《源氏物语》，却留下了袅袅余韵。”',
+    source: '川端康成《哀愁》',
+    link: 'https://book.douban.com/subject/34431972/',
+    linkLabel: '《哀愁：川端康成散文选》· 豆瓣（资料页）',
+  },
+];
+
+const EXTENDED_LINKS = [
+  {
+    title: '源氏物語（与谢野晶子现代日语全译）',
+    note: '青空文库公开的现代日语译本，本站引句多以此本为底；此为其桐壶帖全文，全 54 帖同在文库中。',
+    link: 'https://www.aozora.gr.jp/cards/000052/files/5016_9758.html',
+    linkLabel: '青空文库 · 与谢野晶子译（桐壶帖）',
+  },
+  {
+    title: '源氏物語（日本古典原文）',
+    note: '维基文库收录的《源氏物语》原文。',
+    link: 'https://ja.wikisource.org/wiki/源氏物語',
+    linkLabel: '维基文库 · 原文',
+  },
+  {
+    title: '《源氏物语》中文综合资料',
+    note: '成书背景、版本系统、中文译本与结构介绍。',
+    link: 'https://zh.wikipedia.org/wiki/源氏物语',
+    linkLabel: '中文维基百科',
+  },
+  {
+    title: '宇治市源氏物语博物馆',
+    note: '以宇治十帖与平安贵族文化为主题的常设展。',
+    link: 'https://ja.wikipedia.org/wiki/宇治市源氏物語ミュージアム',
+    linkLabel: '博物馆条目 · 维基百科',
+  },
+];
 
 const HEIAN_WORKS = [
   {
@@ -98,6 +149,9 @@ export default function HomePage() {
             紫式部笔下的平安王朝，人物四百余。这里以光源氏为中心，沿着血脉、情缘与宿怨，
             展开一卷“知物哀”的人物图谱。
           </p>
+          <Link to="/waka" className="hero-link">
+            浏览和歌名句集 →
+          </Link>
         </div>
       </section>
 
@@ -217,12 +271,22 @@ export default function HomePage() {
         </div>
         <MindMap />
         <div className="legend">
-          {LEGEND.map((t) => (
-            <span key={t} className="legend-item">
-              <i style={{ backgroundColor: RELATION_COLOR[t] }} aria-hidden="true" />
-              {RELATION_TYPE_LABEL[t]}
-            </span>
-          ))}
+          {LEGEND.map((t) => {
+            const style = RELATION_STYLE[t];
+            return (
+              <span key={t} className="legend-item">
+                <i
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderTop: `2.5px solid ${style.color}`,
+                    borderTopStyle: dashToCssStyle(style.dash),
+                  }}
+                  aria-hidden="true"
+                />
+                {RELATION_TYPE_LABEL[t]}
+              </span>
+            );
+          })}
           <span className="legend-item legend-aux">
             <i aria-hidden="true" />
             相关人物
@@ -251,16 +315,38 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <section className="famous">
+        <div className="section-head">
+          <h2>名家评说与延伸阅读</h2>
+          <p>
+            古今评说均标注出处；中文译本因版权暂无免费全文，相关条目以资料页代替。
+            以下链接上线前已逐一验证可打开。
+          </p>
+        </div>
+        <div className="famous-quotes">
+          {FAMOUS_EVALUATIONS.map((e) => (
+            <blockquote key={e.source} className="famous-quote">
+              <p>{e.quote}</p>
+              <footer>—— {e.source}</footer>
+              <a href={e.link} target="_blank" rel="noopener noreferrer" className="famous-link">
+                {e.linkLabel} ↗
+              </a>
+            </blockquote>
+          ))}
+        </div>
+        <ul className="famous-links">
+          {EXTENDED_LINKS.map((l) => (
+            <li key={l.title}>
+              <a href={l.link} target="_blank" rel="noopener noreferrer">
+                <span className="famous-link-title">{l.title}</span>
+                <span className="famous-link-note">{l.note}</span>
+                <span className="famous-link-url">{l.linkLabel} ↗</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
-
-const RELATION_COLOR: Record<RelationType, string> = {
-  blood: '#a3402f',
-  marriage: '#a8863b',
-  love: '#b06a72',
-  adoption: '#7c6a94',
-  rivalry: '#6f675c',
-  servant: '#7f9a8c',
-  friend: '#5d7f97',
-};

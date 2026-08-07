@@ -28,6 +28,20 @@ export {
   type SymbolInfo,
 } from './types.ts';
 
+/** 关系线样式：高区分度传统色 + 线型双编码（dash 为 SVG stroke-dasharray） */
+export const RELATION_STYLE: Record<
+  import('./types.ts').RelationType,
+  { color: string; dash?: string }
+> = {
+  blood: { color: '#b23a2c' },
+  marriage: { color: '#c08a2e' },
+  love: { color: '#cf5b70', dash: '9 7' },
+  adoption: { color: '#8a63b0', dash: '2 6' },
+  rivalry: { color: '#4e6b68', dash: '12 5 3 5' },
+  servant: { color: '#4f8f83', dash: '4 5' },
+  friend: { color: '#3f6f9e', dash: '7 4' },
+};
+
 export const characters: Character[] = [
   genji,
   kiritsuboEmperor,

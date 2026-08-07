@@ -4,6 +4,21 @@ import type { ReactNode } from 'react';
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="site">
+      <div className="bg-motif" aria-hidden="true">
+        <svg width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="seigaiha" width="72" height="72" patternUnits="userSpaceOnUse">
+              <g fill="none" stroke="currentColor" strokeWidth="1">
+                <path d="M0 72a36 36 0 0 1 72 0" />
+                <path d="M0 72a54 54 0 0 1 108 0" transform="translate(-18 0)" />
+                <path d="M0 72a72 72 0 0 1 144 0" transform="translate(-36 0)" />
+                <path d="M0 72a18 18 0 0 1 36 0" transform="translate(18 0)" />
+              </g>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#seigaiha)" />
+        </svg>
+      </div>
       <header className="site-header">
         <Link to="/" className="brand">
           <span className="brand-mark" aria-hidden="true">

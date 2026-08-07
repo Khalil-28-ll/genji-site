@@ -1105,3 +1105,405 @@ a.relation-item:hover {
     transition: none !important;
   }
 }
+
+/* ---------- 2026-08 视觉增强：古代色彩、纹样水印与小字 ---------- */
+
+.bg-motif {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  color: var(--ink);
+  opacity: 0.045;
+  pointer-events: none;
+}
+
+.hero-link {
+  display: inline-block;
+  margin-top: 1.7rem;
+  padding: 0.5rem 1.25rem;
+  color: var(--vermilion);
+  border: 1px solid var(--vermilion);
+  border-radius: 999px;
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.hero-link:hover {
+  background: var(--vermilion);
+  color: var(--paper-soft);
+}
+
+.section-head h2::after {
+  content: '';
+  display: block;
+  width: 2.6rem;
+  height: 2px;
+  margin-top: 0.55rem;
+  background: linear-gradient(90deg, var(--vermilion), var(--gold));
+}
+
+.legend {
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.legend-item i {
+  height: 0;
+  border-radius: 0;
+}
+
+.theme-source,
+.character-group,
+.character-namejp,
+.relation-type,
+.nav-direction,
+.story-chapter,
+.corridor-meta,
+.corridor-jp,
+.focus-card-namejp,
+.theme-kana,
+.mindmap-tip {
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.nav-direction,
+.focus-card-hint {
+  font-size: 0.84rem;
+}
+
+.quote footer,
+.evaluation footer,
+.symbol-reading,
+.site-footer {
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.chapter-chip {
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.section-head p,
+.focus-card-note {
+  font-size: 1rem;
+}
+
+/* ---------- 和歌名句页 ---------- */
+
+.waka-page {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.2rem, 4vw, 3rem) var(--space);
+}
+
+.waka-eyebrow {
+  font-size: 0.84rem;
+  letter-spacing: 0.34em;
+  color: var(--celadon-deep);
+  margin-bottom: 0.8rem;
+}
+
+.waka-head h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+  letter-spacing: 0.18em;
+  margin-bottom: 1rem;
+}
+
+.waka-lead {
+  max-width: 42rem;
+  color: var(--ink-soft);
+  line-height: 2;
+}
+
+.waka-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.3rem;
+  margin-top: 2.4rem;
+}
+
+.waka-card {
+  padding: 1.2rem 1.4rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--celadon);
+}
+
+.waka-chapter {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--vermilion);
+  margin: 0 0 0.7rem;
+}
+
+.waka-jp {
+  font-size: 1.18rem;
+  line-height: 2.1;
+  margin: 0 0 0.8rem;
+}
+
+.waka-zh {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.waka-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.85rem;
+}
+
+.waka-speaker {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--ink-faint);
+}
+
+.waka-link {
+  font-size: 0.86rem;
+  color: var(--celadon-deep);
+  border-bottom: 1px solid var(--celadon);
+  padding-bottom: 0.05rem;
+}
+
+.waka-link:hover {
+  color: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.waka-note {
+  margin: 0.8rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--line);
+  font-size: 0.84rem;
+  color: var(--ink-faint);
+  line-height: 1.8;
+}
+
+/* ---------- 角色页分页与判词 ---------- */
+
+.page-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 1.7rem 0 0;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.34rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.page-tab:hover {
+  border-color: var(--celadon);
+  color: var(--celadon-deep);
+}
+
+.page-tab.is-active {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+  background: var(--paper-soft);
+}
+
+.page-tab-num {
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+}
+
+.page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.page-btn {
+  padding: 0.42rem 1.05rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.page-btn:hover {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+}
+
+.page-btn.is-disabled {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.page-dots {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.page-dot span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background 0.2s ease;
+}
+
+.page-dot:hover span {
+  background: var(--celadon);
+}
+
+.page-dot.is-active span {
+  background: var(--vermilion);
+}
+
+.verdict-note {
+  font-size: 0.84rem;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+}
+
+.verdict-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.verdict-waka,
+.verdict-eval {
+  margin: 0;
+}
+
+/* ---------- 名家评说与延伸阅读 ---------- */
+
+.famous {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--space) clamp(1.2rem, 4vw, 3rem) var(--space);
+  border-top: 1px solid var(--line);
+}
+
+.famous-quotes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.famous-quote {
+  margin: 0;
+  padding: 1.15rem 1.3rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+}
+
+.famous-quote p {
+  margin: 0;
+  line-height: 1.95;
+}
+
+.famous-quote footer {
+  margin-top: 0.7rem;
+  font-size: 0.84rem;
+  color: var(--ink-faint);
+}
+
+.famous-link {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-size: 0.86rem;
+  color: var(--celadon-deep);
+  border-bottom: 1px solid var(--celadon);
+  padding-bottom: 0.05rem;
+}
+
+.famous-link:hover {
+  color: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.famous-links {
+  list-style: none;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.famous-links a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.9rem 1rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  transition: border-color 0.2s ease;
+}
+
+.famous-links a:hover {
+  border-color: var(--gold);
+}
+
+.famous-link-title {
+  font-size: 0.96rem;
+  font-weight: 500;
+}
+
+.famous-link-note {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+.famous-link-url {
+  font-size: 0.82rem;
+  color: var(--celadon-deep);
+}
+
+@media (max-width: 720px) {
+  .page-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.6rem;
+  }
+
+  .page-tab {
+    white-space: nowrap;
+  }
+
+  .waka-grid,
+  .verdict-grid,
+  .famous-quotes,
+  .famous-links {
+    grid-template-columns: 1fr;
+  }
+}

@@ -12,19 +12,9 @@ import {
   MAP_H,
   MAP_W,
   RELATION_TYPE_LABEL,
+  RELATION_STYLE,
   type MindEdge,
-  type RelationType,
 } from '../data/characters';
-
-const RELATION_COLOR: Record<RelationType, string> = {
-  blood: '#a3402f',
-  marriage: '#a8863b',
-  love: '#b06a72',
-  adoption: '#7c6a94',
-  rivalry: '#6f675c',
-  servant: '#7f9a8c',
-  friend: '#5d7f97',
-};
 
 interface VBox {
   x: number;
@@ -213,15 +203,18 @@ export default function MindMap() {
           const auxEdge = !characterById.has(e.from) || !characterById.has(e.to);
           const inEgo = egoSet ? egoSet.has(e.from) && egoSet.has(e.to) : false;
           const dimmed = focused !== null && !inEgo;
+          const style = RELATION_STYLE[e.type];
+          const dash = style.dash ?? (auxEdge ? '4 5' : undefined);
           return (
             <path
               key={`${e.from}|${e.to}`}
               d={edgePath(a.x, a.y, b.x, b.y)}
               fill="none"
-              stroke={RELATION_COLOR[e.type]}
-              strokeWidth={focused && inEgo ? 3 : auxEdge ? 1.5 : 2}
-              strokeDasharray={auxEdge ? '4 5' : undefined}
-              opacity={dimmed ? 0.06 : focused && inEgo ? 0.95 : 0.6}
+              stroke={style.color}
+              strokeWidth={focused && inEgo ? 3.5 : auxEdge ? 1.6 : 2.4}
+              strokeDasharray={dash}
+              strokeLinecap="round"
+              opacity={dimmed ? 0.06 : focused && inEgo ? 0.95 : 0.72}
               className="mindmap-edge"
             >
               <title>
