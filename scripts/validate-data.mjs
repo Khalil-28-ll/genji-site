@@ -3,12 +3,26 @@ import {
   CHAPTER_NUM,
   RELATION_TYPE_LABEL,
 } from '../src/data/characters.ts';
+import { GENJI_AGE } from '../src/data/chronology.ts';
 
 const errors = [];
 const ids = new Set(characters.map((c) => c.id));
 const chapterNames = new Set(Object.keys(CHAPTER_NUM));
 const relationTypes = new Set(Object.keys(RELATION_TYPE_LABEL));
 const evalKinds = new Set(['original', 'paraphrase', 'analysis']);
+
+const postGenjiChapters = new Set(
+  GENJI_AGE.filter((e) => e.num >= 42).map((e) => e.chapter),
+);
+
+for (const e of GENJI_AGE) {
+  if (e.num >= 42 && !e.kaoruAge?.trim()) {
+    errors.push(`年立: 第 ${e.num} 帖「${e.chapter}」缺少 kaoruAge（源氏死后应以薰年龄标定）`);
+  }
+  if (e.num < 42 && e.kaoruAge) {
+    errors.push(`年立: 第 ${e.num} 帖「${e.chapter}」不应有 kaoruAge`);
+  }
+}
 
 for (const c of characters) {
   for (const field of ['id', 'name', 'nameJp', 'identity', 'summary', 'group', 'tier']) {
@@ -31,6 +45,13 @@ for (const c of characters) {
       }
       if (!chapterNames.has(ev.chapter)) {
         errors.push(`${c.id}: 帖名「${ev.chapter}」不在 54 帖表中`);
+      }
+      if (postGenjiChapters.has(ev.chapter)) {
+        if (!ev.age || ev.age.includes('源氏已殁') || !ev.age.includes('薰')) {
+          errors.push(
+            `${c.id}: 第三部（${ev.chapter}）事件 age 需以薰年龄标定（当前：${ev.age ?? '（无）'}）`,
+          );
+        }
       }
     }
   }

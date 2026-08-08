@@ -148,7 +148,7 @@ export const yugiri: Character = {
     },
     {
       chapter: '竹河',
-      age: '源氏已殁',
+      age: '薰 14—23 秋（追叙）',
       text: '其子藏人少将恋慕玉鬘之女，家族姻缘继续与源氏一族交织。',
     },
   ],
@@ -249,7 +249,7 @@ export const tamakazura: Character = {
     },
     {
       chapter: '竹河',
-      age: '源氏已殁',
+      age: '薰 14—23 秋（追叙）',
       text: '髭黑死后，她为子女前程操劳：长女入冷泉院、次女任尚侍，皆不如意；儿子们反指责她攀附，晚景孤独。',
     },
   ],

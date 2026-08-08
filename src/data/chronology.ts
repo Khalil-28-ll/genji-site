@@ -3,12 +3,14 @@
  *
  * 以丰子恺译本（人民文学出版社）各回回末注文为基准整理，即学界所称“二期年立”；
  * 丰译本注文付阙或与正文年代有出入处，一律标“约”并在备注说明。
- * 第三部（42–54 帖）发生在源氏死后，年龄栏记为“源氏已殁”。
+ * 第三部（42–54 帖）发生在源氏死后，年龄栏记为“源氏已殁”，另以薰年龄标定（kaoruAge）。
  */
 export interface ChronologyEntry {
   num: number;
   chapter: string;
   age: string;
+  /** 42–54 帖（源氏死后）以薰年龄标定，如“薰 24 岁” */
+  kaoruAge?: string;
   note?: string;
 }
 
@@ -46,8 +48,8 @@ export const GENJI_AGE: ChronologyEntry[] = [
   { num: 31, chapter: '真木柱', age: '约 37 岁冬—38 岁冬', note: '丰译注；玉鬘嫁髭黑大将' },
   { num: 32, chapter: '梅枝', age: '39 岁春', note: '丰译注；明石中宫入内筹备' },
   { num: 33, chapter: '藤裏叶', age: '约 39 岁 3—10 月', note: '丰译注；明石中宫入内；源氏位列准太上天皇' },
-  { num: 34, chapter: '若菜（上）', age: '约 39 岁 12 月—40 岁', note: '丰译注（新菜上·下合计三十九岁十二月至四十一岁三月）；迎娶女三宫；匂宫出生；40 岁之贺' },
-  { num: 34, chapter: '若菜（下）', age: '约 41 岁 3 月起（42—45 岁四年无记载，续 46—47 岁）', note: '丰译新菜续注；柏木与女三宫密事' },
+  { num: 34, chapter: '若菜（上）', age: '约 39 岁 12 月—40 岁', note: '丰译注（新菜上·下合计三十九岁十二月至四十一岁三月）；迎娶女三宫；40 岁之贺' },
+  { num: 34, chapter: '若菜（下）', age: '约 41 岁 3 月起（42—45 岁四年无记载，续 46—47 岁）', note: '丰译新菜续注；柏木与女三宫密事；匂宫约生于此帖后期（源氏约 46—47 岁，推定）' },
   { num: 35, chapter: '柏木', age: '约 48 岁正月—秋', note: '丰译注；薰出生；柏木忧惧而死' },
   { num: 36, chapter: '横笛', age: '约 49 岁 2 月—秋', note: '丰译注；柏木遗爱之笛' },
   { num: 37, chapter: '铃虫', age: '约 50 岁夏—8 月', note: '丰译注；女三宫佛事；铃虫宴' },
@@ -55,21 +57,103 @@ export const GENJI_AGE: ChronologyEntry[] = [
   { num: 39, chapter: '御法', age: '约 51 岁春—秋', note: '丰译注；紫上之死' },
   { num: 40, chapter: '幻', age: '约 52 岁春—冬', note: '丰译注；紫上周年忌；决意出家' },
   { num: 41, chapter: '云隐', age: '约 53 岁起（无正文）', note: '丰译注：幻帖次年五十三岁至六十岁之间死去，卒年至早五十五六岁' },
-  { num: 42, chapter: '匂宫', age: '源氏已殁', note: '薰、匂宫一代' },
-  { num: 43, chapter: '红梅', age: '源氏已殁', note: '匂宫好色之名' },
-  { num: 44, chapter: '竹河', age: '源氏已殁', note: '玉鬘子女一代' },
-  { num: 45, chapter: '桥姬', age: '源氏已殁', note: '宇治十帖始' },
-  { num: 46, chapter: '椎本', age: '源氏已殁', note: '八宫圆寂' },
-  { num: 47, chapter: '总角', age: '源氏已殁', note: '大君之死' },
-  { num: 48, chapter: '早蕨', age: '源氏已殁', note: '中君入京' },
-  { num: 49, chapter: '宿木', age: '源氏已殁', note: '薰迎娶女二宫；浮舟出场' },
-  { num: 50, chapter: '东屋', age: '源氏已殁', note: '浮舟身世' },
-  { num: 51, chapter: '浮舟', age: '源氏已殁', note: '浮舟投川' },
-  { num: 52, chapter: '蜻蛉', age: '源氏已殁', note: '浮舟失踪' },
-  { num: 53, chapter: '手习', age: '源氏已殁', note: '浮舟出家' },
-  { num: 54, chapter: '梦浮桥', age: '源氏已殁', note: '全书终' },
+  {
+    num: 42,
+    chapter: '匂宫',
+    age: '源氏已殁',
+    kaoruAge: '薰 14 春—20 正月（匂宫 15—21 岁）',
+    note: '丰译注：三皇子（匂皇子）十五岁、薰君十四岁；本回从薰君十四岁春天写到二十岁正月',
+  },
+  {
+    num: 43,
+    chapter: '红梅',
+    age: '源氏已殁',
+    kaoruAge: '薰 24 岁（匂宫 25 岁）',
+    note: '丰译注：与前回“匂皇子”相隔四年',
+  },
+  {
+    num: 44,
+    chapter: '竹河',
+    age: '源氏已殁',
+    kaoruAge: '薰 14—23 秋（追叙）',
+    note: '丰译注：写薰君十四五岁至二十三岁秋天之事，与前二回同一时期',
+  },
+  {
+    num: 45,
+    chapter: '桥姬',
+    age: '源氏已殁',
+    kaoruAge: '薰 20—22 秋末',
+    note: '宇治十帖始；通行年立',
+  },
+  {
+    num: 46,
+    chapter: '椎本',
+    age: '源氏已殁',
+    kaoruAge: '薰 23 春—24 夏（约/推定）',
+    note: '八宫圆寂',
+  },
+  {
+    num: 47,
+    chapter: '总角',
+    age: '源氏已殁',
+    kaoruAge: '薰 24 秋—冬（约/推定）',
+    note: '大君之死',
+  },
+  {
+    num: 48,
+    chapter: '早蕨',
+    age: '源氏已殁',
+    kaoruAge: '薰 25 春',
+    note: '丰译注：写薰君二十五岁春天之事；中君入京',
+  },
+  {
+    num: 49,
+    chapter: '宿木',
+    age: '源氏已殁',
+    kaoruAge: '薰 25 春—26 夏（约）',
+    note: '一期年立有作 24—26 岁，分歧处标约；薰迎娶女二宫；浮舟出场',
+  },
+  {
+    num: 50,
+    chapter: '东屋',
+    age: '源氏已殁',
+    kaoruAge: '薰 26 秋',
+    note: '丰译注：写薰君二十六岁秋天之事；浮舟身世',
+  },
+  {
+    num: 51,
+    chapter: '浮舟',
+    age: '源氏已殁',
+    kaoruAge: '薰 27 春',
+    note: '丰译注：写薰君二十七岁春天之事；浮舟投川',
+  },
+  {
+    num: 52,
+    chapter: '蜻蛉',
+    age: '源氏已殁',
+    kaoruAge: '薰 27（约）',
+    note: '浮舟失踪',
+  },
+  {
+    num: 53,
+    chapter: '手习',
+    age: '源氏已殁',
+    kaoruAge: '薰 27—28 夏（约）',
+    note: '浮舟出家',
+  },
+  {
+    num: 54,
+    chapter: '梦浮桥',
+    age: '源氏已殁',
+    kaoruAge: '薰 28 五月',
+    note: '丰译注：写薰大将二十八岁五月之事；全书终',
+  },
 ];
 
 export const GENJI_AGE_BY_CHAPTER: Record<string, string> = Object.fromEntries(
   GENJI_AGE.map((e) => [e.chapter, e.age]),
+);
+
+export const KAORU_AGE_BY_CHAPTER: Record<string, string> = Object.fromEntries(
+  GENJI_AGE.filter((e) => e.kaoruAge).map((e) => [e.chapter, e.kaoruAge!]),
 );
