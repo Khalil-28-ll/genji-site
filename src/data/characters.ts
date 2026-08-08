@@ -11,7 +11,7 @@ import {
 } from './entries/wives-b.ts';
 import { kashiwagi, tamakazura, touNoChujo, yugiri } from './entries/children.ts';
 import { kaoru, niou, ukifune } from './entries/uji.ts';
-import { auxEdges, auxiliaryNodes } from './entries/auxiliary.ts';
+import { supportingCharacters } from './entries/supporting.ts';
 
 export type { Character, RelationType, CharacterGroup } from './types.ts';
 export {
@@ -19,27 +19,32 @@ export {
   CHAPTER_ORDER,
   GROUP_LABEL,
   RELATION_TYPE_LABEL,
-  type AuxEdge,
-  type AuxiliaryNode,
   type Evaluation,
+  type LifeSpan,
   type Quote,
+  type Reference,
   type Relation,
   type StoryEvent,
   type SymbolInfo,
 } from './types.ts';
 
-/** 关系线样式：高区分度传统色 + 线型双编码（dash 为 SVG stroke-dasharray） */
+/** 12 类关系线：高区分度传统色 + 线型双编码（dash 为 SVG stroke-dasharray） */
 export const RELATION_STYLE: Record<
   import('./types.ts').RelationType,
   { color: string; dash?: string }
 > = {
-  blood: { color: '#b23a2c' },
+  parent: { color: '#2f6b4f' },
+  sibling: { color: '#4f8f83' },
   marriage: { color: '#c08a2e' },
-  love: { color: '#cf5b70', dash: '9 7' },
+  concubine: { color: '#d28a4f' },
+  affair: { color: '#b23a2c', dash: '9 7' },
+  love: { color: '#cf5b70', dash: '7 4' },
   adoption: { color: '#8a63b0', dash: '2 6' },
-  rivalry: { color: '#4e6b68', dash: '12 5 3 5' },
-  servant: { color: '#4f8f83', dash: '4 5' },
+  guardian: { color: '#6b7f3f', dash: '12 5' },
+  servant: { color: '#4e6b68', dash: '4 5' },
   friend: { color: '#3f6f9e', dash: '7 4' },
+  rivalry: { color: '#3f3a35', dash: '12 5 3 5' },
+  religious: { color: '#5b5f8a', dash: '2 7' },
 };
 
 export const characters: Character[] = [
@@ -65,9 +70,8 @@ export const characters: Character[] = [
   kaoru,
   niou,
   ukifune,
+  ...supportingCharacters,
 ];
-
-export { auxiliaryNodes, auxEdges };
 
 export const characterById = new Map(characters.map((c) => [c.id, c]));
 
@@ -75,7 +79,7 @@ export const characterById = new Map(characters.map((c) => [c.id, c]));
 export const MAP_W = 1800;
 export const MAP_H = 1200;
 
-/** 思维导图节点坐标（已按 1.1 倍放大并整体平移，适配 1800×1200 画布） */
+/** 思维导图节点坐标（36 位角色全部含于其中） */
 export const LAYOUT: Record<string, { x: number; y: number }> = {
   'kiritsubo-emperor': { x: 337, y: 183 },
   fujitsubo: { x: 183, y: 326 },
@@ -130,23 +134,17 @@ export interface MindEdge {
   type: import('./types.ts').RelationType;
 }
 
-/** 由角色数据与辅助关系推导全部边（无向、去重） */
+/** 由角色数据推导全部边（无向、去重） */
 export function buildMindEdges(): MindEdge[] {
   const edges: MindEdge[] = [];
   const seen = new Set<string>();
-  const push = (from: string, to: string, type: import('./types.ts').RelationType) => {
-    const key = [from, to].sort().join('|');
-    if (seen.has(key)) return;
-    seen.add(key);
-    edges.push({ from, to, type });
-  };
   for (const c of characters) {
     for (const r of c.relations) {
-      push(c.id, r.targetId, r.type);
+      const key = [c.id, r.targetId].sort().join('|');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      edges.push({ from: c.id, to: r.targetId, type: r.type });
     }
-  }
-  for (const e of auxEdges) {
-    push(e.from, e.to, e.type);
   }
   return edges;
 }

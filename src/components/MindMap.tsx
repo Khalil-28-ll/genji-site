@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Crest from './Crest';
 import {
-  auxiliaryNodes,
   buildMindEdges,
   characterById,
   characters,
@@ -112,11 +111,10 @@ function useAnimatedViewBox(target: VBox) {
 export default function MindMap() {
   const navigate = useNavigate();
   const edges = useMemo(() => buildMindEdges(), []);
-  const auxById = useMemo(() => new Map(auxiliaryNodes.map((n) => [n.id, n])), []);
   const [focused, setFocused] = useState<string | null>(null);
   const lastClickRef = useRef<{ id: string; time: number } | null>(null);
 
-  const nameOf = (id: string) => characterById.get(id)?.name ?? auxById.get(id)?.name ?? id;
+  const nameOf = (id: string) => characterById.get(id)?.name ?? id;
 
   const target = useMemo(
     () => (focused ? egoViewBox(focused, edges) : FULL_VIEW),
@@ -135,7 +133,6 @@ export default function MindMap() {
   }, [focused, edges]);
 
   const focusedChar = focused ? characterById.get(focused) : undefined;
-  const focusedAux = focused ? auxById.get(focused) : undefined;
 
   const neighborNames = useMemo(() => {
     if (!egoSet || !focused) return [];
@@ -200,18 +197,17 @@ export default function MindMap() {
           const a = LAYOUT[e.from];
           const b = LAYOUT[e.to];
           if (!a || !b) return null;
-          const auxEdge = !characterById.has(e.from) || !characterById.has(e.to);
           const inEgo = egoSet ? egoSet.has(e.from) && egoSet.has(e.to) : false;
           const dimmed = focused !== null && !inEgo;
           const style = RELATION_STYLE[e.type];
-          const dash = style.dash ?? (auxEdge ? '4 5' : undefined);
+          const dash = style.dash;
           return (
             <path
               key={`${e.from}|${e.to}`}
               d={edgePath(a.x, a.y, b.x, b.y)}
               fill="none"
               stroke={style.color}
-              strokeWidth={focused && inEgo ? 3.5 : auxEdge ? 1.6 : 2.4}
+              strokeWidth={focused && inEgo ? 3.5 : 2.4}
               strokeDasharray={dash}
               strokeLinecap="round"
               opacity={dimmed ? 0.06 : focused && inEgo ? 0.95 : 0.72}
@@ -221,43 +217,6 @@ export default function MindMap() {
                 {nameOf(e.from)} — {nameOf(e.to)}：{RELATION_TYPE_LABEL[e.type]}
               </title>
             </path>
-          );
-        })}
-        {auxiliaryNodes.map((n) => {
-          const p = LAYOUT[n.id];
-          if (!p) return null;
-          const dimmed = focused !== null && !egoSet?.has(n.id);
-          return (
-            <g
-              key={n.id}
-              className={`mind-node mind-node-aux${dimmed ? ' is-dimmed' : ''}${focused === n.id ? ' is-focused' : ''}`}
-              role="button"
-              tabIndex={0}
-              aria-label={`${n.name}：${n.note}，单击查看其关系`}
-              onClick={() => setFocused(n.id)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setFocused(n.id);
-                }
-              }}
-            >
-              <circle
-                cx={p.x}
-                cy={p.y}
-                r={focused === n.id ? 22 : 16}
-                fill="var(--paper-deep)"
-                stroke="var(--line)"
-                strokeWidth="1.4"
-                strokeDasharray="4 4"
-              />
-              <text x={p.x} y={p.y + 34} textAnchor="middle" className="mind-node-label-aux">
-                {n.name}
-              </text>
-              <title>
-                {n.name}（{n.nameJp}）· {n.note}
-              </title>
-            </g>
           );
         })}
         {characters.map((c) => {
@@ -303,18 +262,13 @@ export default function MindMap() {
         })}
       </svg>
 
-      {focused && (focusedChar || focusedAux) && (
+      {focused && focusedChar && (
         <aside className="mindmap-focus-card" aria-label="聚焦角色信息">
           <div className="focus-card-head">
-            <Crest
-              glyph={focusedChar?.symbols[0]?.glyph ?? 'default'}
-              size={46}
-            />
+            <Crest glyph={focusedChar.symbols[0]?.glyph ?? 'default'} size={46} />
             <div className="focus-card-title">
-              <p className="focus-card-name">{focusedChar?.name ?? focusedAux?.name}</p>
-              <p className="focus-card-namejp">
-                {focusedChar?.nameJp ?? focusedAux?.nameJp}
-              </p>
+              <p className="focus-card-name">{focusedChar.name}</p>
+              <p className="focus-card-namejp">{focusedChar.nameJp}</p>
             </div>
             <button
               type="button"
@@ -325,9 +279,7 @@ export default function MindMap() {
               ×
             </button>
           </div>
-          <p className="focus-card-note">
-            {focusedChar ? focusedChar.identity : focusedAux?.note}
-          </p>
+          <p className="focus-card-note">{focusedChar.identity}</p>
           {neighborNames.length > 0 && (
             <p className="focus-card-neighbors">
               <span>关系网</span>
@@ -335,20 +287,14 @@ export default function MindMap() {
             </p>
           )}
           <div className="focus-card-actions">
-            {focusedChar ? (
-              <Link to={`/characters/${focusedChar.id}`} className="focus-card-link">
-                查看完整介绍
-              </Link>
-            ) : (
-              <span className="focus-card-aux-note">相关人物，暂无独立介绍页</span>
-            )}
+            <Link to={`/characters/${focusedChar.id}`} className="focus-card-link">
+              查看完整介绍
+            </Link>
             <button type="button" className="focus-card-reset" onClick={reset}>
               恢复全局图
             </button>
           </div>
-          <p className="focus-card-hint">
-            {focusedChar ? '双击节点亦可进入介绍 · Esc 关闭聚焦' : 'Esc 关闭聚焦'}
-          </p>
+          <p className="focus-card-hint">双击节点亦可进入介绍 · Esc 关闭聚焦</p>
         </aside>
       )}
     </div>

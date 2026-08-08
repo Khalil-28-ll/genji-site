@@ -1,11 +1,16 @@
 export type RelationType =
-  | 'blood'
+  | 'parent'
+  | 'sibling'
   | 'marriage'
+  | 'concubine'
+  | 'affair'
   | 'love'
   | 'adoption'
-  | 'rivalry'
+  | 'guardian'
   | 'servant'
-  | 'friend';
+  | 'friend'
+  | 'rivalry'
+  | 'religious';
 
 export type CharacterGroup =
   | 'royal'
@@ -15,6 +20,8 @@ export type CharacterGroup =
   | 'left-minister'
   | 'uji';
 
+export type CharacterTier = 'core' | 'supporting';
+
 export interface SymbolInfo {
   glyph: string;
   name: string;
@@ -23,7 +30,7 @@ export interface SymbolInfo {
 }
 
 export interface Quote {
-  /** 日语原文（与谢野晶子现代日语译文或原和歌）；取自中文译本时可省略 */
+  /** 日语原文（与谢野晶子现代日语译文或原和歌）；取自中译本时可省略 */
   jp?: string;
   zh: string;
   chapter: string;
@@ -34,12 +41,37 @@ export interface StoryEvent {
   chapter: string;
   /** 该帖中的关键事件 */
   text: string;
+  /** 事件发生时的源氏年龄标定，如“源氏17岁”；不确定时标“约” */
+  age?: string;
+  /** 书中描写的出场、逝后影响等原文性描写（引文或简述），可省略 */
+  aftermath?: string;
+}
+
+export interface LifeSpan {
+  /** 出生标定：以帖名＋源氏年龄表述；书中未明示则写“书中未明示” */
+  birth: string;
+  /** 逝世/出家等终局标定；书中未明示则写“书中未明示” */
+  death: string;
+  /** 补充说明，如“终年约43岁”“云隐无正文，历来推定” */
+  note?: string;
 }
 
 export interface Evaluation {
   text: string;
   source: string;
+  /** 原文直接引用 / 转述 / 论文分析 */
+  kind?: 'original' | 'paraphrase' | 'analysis';
+  /** 兼容旧数据：true 表示转述 */
   paraphrase?: boolean;
+  /** 来源链接（论文、公版原文、资料页等） */
+  link?: string;
+  linkLabel?: string;
+}
+
+export interface Reference {
+  title: string;
+  url: string;
+  note?: string;
 }
 
 export interface Relation {
@@ -54,38 +86,34 @@ export interface Character {
   nameJp: string;
   alias: string[];
   group: CharacterGroup;
+  /** core=核心角色（生平≥4条），supporting=次要角色（生平≥2条） */
+  tier: CharacterTier;
   identity: string;
   summary: string;
+  life: LifeSpan;
   story: StoryEvent[];
   symbols: SymbolInfo[];
   quotes: Quote[];
   evaluations: Evaluation[];
+  /** 延伸阅读链接（论文、公版原文、资料页） */
+  references?: Reference[];
   chapters: string[];
   relations: Relation[];
 }
 
-export interface AuxiliaryNode {
-  id: string;
-  name: string;
-  nameJp: string;
-  group: CharacterGroup;
-  note: string;
-}
-
-export interface AuxEdge {
-  from: string;
-  to: string;
-  type: RelationType;
-}
-
 export const RELATION_TYPE_LABEL: Record<RelationType, string> = {
-  blood: '血亲',
+  parent: '亲子·祖孙',
+  sibling: '手足',
   marriage: '夫妻',
-  love: '情缘',
+  concubine: '侧室',
+  affair: '私通·禁忌',
+  love: '恋慕·情缘',
   adoption: '养亲',
-  rivalry: '宿怨',
+  guardian: '庇护·托付',
   servant: '主从',
-  friend: '友缘',
+  friend: '友伴',
+  rivalry: '政敌·宿怨',
+  religious: '佛缘·救度',
 };
 
 export const GROUP_LABEL: Record<CharacterGroup, string> = {

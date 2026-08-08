@@ -2,7 +2,20 @@ import { Link } from 'react-router-dom';
 import MindMap from './MindMap';
 import { RELATION_STYLE, RELATION_TYPE_LABEL } from '../data/characters';
 
-const LEGEND = ['blood', 'marriage', 'love', 'adoption', 'rivalry', 'servant', 'friend'] as const;
+const LEGEND = [
+  'parent',
+  'sibling',
+  'marriage',
+  'concubine',
+  'affair',
+  'love',
+  'adoption',
+  'guardian',
+  'servant',
+  'friend',
+  'rivalry',
+  'religious',
+] as const;
 
 function dashToCssStyle(dash?: string) {
   if (!dash) return 'solid';
@@ -196,6 +209,14 @@ export default function HomePage() {
             <dd>世界最早的长篇写实小说之一</dd>
           </div>
         </dl>
+        <div className="home-quicklinks">
+          <Link to="/heian" className="quicklink">
+            创作时代与平安文学 →
+          </Link>
+          <Link to="/chronology" className="quicklink">
+            源氏年立表 →
+          </Link>
+        </div>
       </section>
 
       <section className="about-book">
@@ -294,25 +315,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="corridor">
+      <section className="heian-gate">
         <div className="section-head">
-          <h2>平安文学走廊</h2>
+          <h2>创作时代与平安文学</h2>
           <p>
-            《源氏物语》并非孤峰。与它同时代或稍早的物语、随笔与日记，
-            共同构成平安朝的文学风景。
+            《源氏物语》诞生于藤原摄关政治与假名文学勃兴的平安中期。
+            它的时代背景、文学源流与后世影响，尽在专页中展开。
           </p>
         </div>
-        <div className="corridor-grid">
-          {HEIAN_WORKS.map((w) => (
-            <article key={w.title} className="corridor-item">
-              <div className="corridor-title">
-                <h3>{w.title}</h3>
-                <p className="corridor-jp">{w.jp}</p>
-              </div>
-              <p className="corridor-meta">{w.meta}</p>
-              <p className="corridor-note">{w.note}</p>
-            </article>
-          ))}
+        <div className="heian-gate-card">
+          <div className="heian-gate-intro">
+            <h3>《源氏物语》的创作时代</h3>
+            <p>
+              平安时代中期（约 1001—1008），后宫女房以假名书写物语、日记与和歌，
+              形成“国风文化”的文学现场。从《竹取物语》到《枕草子》，
+              平安文学以“物哀”与“をかし”双峰并立。
+            </p>
+            <Link to="/heian" className="heian-gate-link">
+              进入平安文学专页 →
+            </Link>
+          </div>
+          <ul className="heian-gate-preview">
+            {HEIAN_WORKS.slice(0, 6).map((w) => (
+              <li key={w.title}>
+                <span>{w.title}</span>
+                <small>{w.meta}</small>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

@@ -4,15 +4,13 @@ import Crest from './Crest';
 import {
   characterById,
   characters,
-  auxiliaryNodes,
   CHAPTER_NUM,
   GROUP_LABEL,
   RELATION_TYPE_LABEL,
+  RELATION_STYLE,
   type Character,
   type Relation,
 } from '../data/characters';
-
-const auxById = new Map(auxiliaryNodes.map((n) => [n.id, n]));
 
 const PAGES = [
   { n: 1, title: '总览' },
@@ -22,6 +20,21 @@ const PAGES = [
   { n: 5, title: '评说与出场' },
 ];
 
+const STYLE_BY_GROUP: Record<Character['group'], string> = {
+  royal: 'style-royal',
+  center: 'style-center',
+  wives: 'style-wives',
+  children: 'style-children',
+  'left-minister': 'style-minister',
+  uji: 'style-uji',
+};
+
+const KIND_LABEL: Record<string, string> = {
+  original: '原文引用',
+  paraphrase: '转述',
+  analysis: '论文分析',
+};
+
 function chapterLabel(name: string) {
   const num = CHAPTER_NUM[name];
   return num ? `第${num}帖 · ${name}` : name;
@@ -29,12 +42,14 @@ function chapterLabel(name: string) {
 
 function RelationItem({ relation }: { relation: Relation }) {
   const target = characterById.get(relation.targetId);
-  const aux = auxById.get(relation.targetId);
   const typeLabel = RELATION_TYPE_LABEL[relation.type];
+  const style = RELATION_STYLE[relation.type];
   if (target) {
     return (
       <Link to={`/characters/${target.id}`} className="relation-item">
-        <span className="relation-type">{typeLabel}</span>
+        <span className="relation-type" style={{ borderColor: style.color, color: style.color }}>
+          {typeLabel}
+        </span>
         <span className="relation-name">{target.name}</span>
         <span className="relation-label">{relation.label}</span>
       </Link>
@@ -42,8 +57,10 @@ function RelationItem({ relation }: { relation: Relation }) {
   }
   return (
     <span className="relation-item relation-item-aux">
-      <span className="relation-type">{typeLabel}</span>
-      <span className="relation-name">{aux?.name ?? relation.targetId}</span>
+      <span className="relation-type" style={{ borderColor: style.color, color: style.color }}>
+        {typeLabel}
+      </span>
+      <span className="relation-name">{relation.targetId}</span>
       <span className="relation-label">{relation.label}</span>
     </span>
   );
@@ -76,6 +93,22 @@ function Verdict({ character }: { character: Character }) {
     </section>
   );
 }
+
+function evaluationKind(e: Character['evaluations'][number]): string {
+  return e.kind ?? (e.paraphrase ? 'paraphrase' : 'original');
+}
+
+const TERMS: { term: string; explain: string }[] = [
+  { term: '女御 / 更衣', explain: '天皇后宫位阶。女御位高，可立为皇后（中宫）；更衣位在其下，多以容貌受宠。' },
+  { term: '中宫', explain: '皇后之宫号。平安后期“中宫”与“皇后”并行，中宫多指现任皇后。' },
+  { term: '御息所', explain: '对皇族妃妾或高官夫人的敬称，文中专指前东宫妃六条御息所。' },
+  { term: '尚侍', explain: '后宫十二司之首（内侍司长官），掌传奏；多为天皇宠妃，亦为高位女官。' },
+  { term: '斋院 / 斋宫', explain: '奉祀神明、终身或限期不婚的皇女。斋宫侍伊势神宫，斋院侍贺茂神社。' },
+  { term: '准太上天皇', explain: '非天皇而享太上天皇待遇的尊号；源氏以人臣之身获此位，为荣华顶点。' },
+  { term: '大将 / 中将', explain: '近卫府武官名。中将为次官，大将为其长官；文中头中将、源氏大将均以此称。' },
+  { term: '大臣', explain: '太政官最高官职。左大臣、右大臣分居太政大臣之下，掌国政。' },
+  { term: '生霊', explain: '平安时代信仰：活人怨念离体，化为“生霊”加害他人；六条御息所即以此祟人。' },
+];
 
 export default function CharacterPage() {
   const { id, page: pageParam } = useParams();
@@ -123,7 +156,7 @@ export default function CharacterPage() {
   const pageTo = (n: number) => `/characters/${character.id}/${n}`;
 
   return (
-    <article className="character-page">
+    <article className={`character-page ${STYLE_BY_GROUP[character.group]}`}>
       <header className="character-head">
         <Crest glyph={character.symbols[0]?.glyph ?? 'default'} size={92} />
         <div className="character-title">
@@ -175,17 +208,46 @@ export default function CharacterPage() {
               ))}
             </div>
           </section>
+          <details className="term-glossary">
+            <summary>平安官职与称谓小注</summary>
+            <dl>
+              {TERMS.map((t) => (
+                <div key={t.term}>
+                  <dt>{t.term}</dt>
+                  <dd>{t.explain}</dd>
+                </div>
+              ))}
+            </dl>
+          </details>
         </>
       )}
 
       {page === 2 && (
         <section className="character-section">
           <h2>生平</h2>
+          <div className="life-box">
+            <div className="life-item">
+              <span className="life-kind">生</span>
+              <p>{character.life.birth}</p>
+            </div>
+            <div className="life-item">
+              <span className="life-kind">卒</span>
+              <p>{character.life.death}</p>
+            </div>
+            {character.life.note && <p className="life-note">{character.life.note}</p>}
+            <Link to="/chronology" className="life-link">
+              查看源氏年立表 →
+            </Link>
+          </div>
           <ul className="story-list">
             {character.story.map((ev, i) => (
               <li key={i} className="story-item">
                 <span className="story-chapter">{chapterLabel(ev.chapter)}</span>
-                <span className="story-text">{ev.text}</span>
+                <span className="story-text">
+                  {ev.age && <span className="story-age">{ev.age}</span>}
+                  {ev.text}
+                  {ev.aftermath && <span className="story-aftermath">{ev.aftermath}</span>}
+                </span>
               </li>
             ))}
           </ul>
@@ -221,15 +283,41 @@ export default function CharacterPage() {
           <section className="character-section">
             <h2>古今评说</h2>
             {character.evaluations.map((e, i) => (
-              <blockquote key={i} className="evaluation">
+              <blockquote key={i} className={`evaluation evaluation-${evaluationKind(e)}`}>
+                <span className="evaluation-kind">{KIND_LABEL[evaluationKind(e)]}</span>
                 <p>{e.text}</p>
                 <footer>
                   —— {e.source}
-                  {e.paraphrase ? '（转述）' : ''}
+                  {e.link && (
+                    <a
+                      href={e.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="evaluation-link"
+                    >
+                      {e.linkLabel ?? '来源链接'} ↗
+                    </a>
+                  )}
                 </footer>
               </blockquote>
             ))}
           </section>
+          {character.references && character.references.length > 0 && (
+            <section className="character-section">
+              <h2>延伸阅读</h2>
+              <ul className="reference-list">
+                {character.references.map((r) => (
+                  <li key={r.url + r.title}>
+                    <a href={r.url} target="_blank" rel="noopener noreferrer">
+                      <span className="reference-title">{r.title}</span>
+                      {r.note && <span className="reference-note">{r.note}</span>}
+                      <span className="reference-url">打开链接 ↗</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           <section className="character-section">
             <h2>主要出场帖</h2>
             <div className="chapters">

@@ -71,6 +71,39 @@ p {
   border-bottom: 1px solid var(--line);
 }
 
+.site-header-inner {
+  max-width: 1520px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.site-nav {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  padding: 0.32rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.site-nav a:hover {
+  border-color: var(--celadon);
+  color: var(--celadon-deep);
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -698,6 +731,9 @@ main {
   max-width: 860px;
   margin: 0 auto;
   padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.2rem, 4vw, 3rem) var(--space);
+  --style-accent: var(--gold);
+  --style-accent-deep: #7a5c22;
+  --style-mono: #eae2d0;
 }
 
 .character-head {
@@ -752,7 +788,7 @@ main {
   font-size: 1.15rem;
   letter-spacing: 0.3em;
   padding-left: 0.85rem;
-  border-left: 3px solid var(--gold);
+  border-left: 3px solid var(--style-accent);
   margin-bottom: 1.1rem;
 }
 
@@ -779,8 +815,8 @@ main {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--celadon);
-  border: 1px solid var(--celadon-deep);
+  background: var(--style-accent);
+  border: 1px solid var(--style-accent-deep);
 }
 
 .story-item::after {
@@ -804,8 +840,8 @@ main {
 .story-chapter {
   font-size: 0.78rem;
   letter-spacing: 0.08em;
-  color: var(--celadon-deep);
-  border: 1px solid var(--celadon);
+  color: var(--style-accent-deep);
+  border: 1px solid var(--style-accent);
   border-radius: 999px;
   text-align: center;
   align-self: start;
@@ -871,7 +907,7 @@ a.relation-item:hover {
   padding: 1.2rem 1.4rem;
   background: var(--paper-soft);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--vermilion);
+  border-left: 3px solid var(--style-accent);
 }
 
 .quote p,
@@ -899,7 +935,7 @@ a.relation-item:hover {
 }
 
 .evaluation {
-  border-left-color: var(--fuji);
+  border-left-color: var(--style-accent);
 }
 
 .symbols {
@@ -1322,8 +1358,8 @@ a.relation-item:hover {
 }
 
 .page-tab.is-active {
-  border-color: var(--vermilion);
-  color: var(--vermilion);
+  border-color: var(--style-accent);
+  color: var(--style-accent);
   background: var(--paper-soft);
 }
 
@@ -1382,7 +1418,7 @@ a.relation-item:hover {
 }
 
 .page-dot.is-active span {
-  background: var(--vermilion);
+  background: var(--style-accent);
 }
 
 .verdict-note {
@@ -1505,5 +1541,689 @@ a.relation-item:hover {
   .famous-quotes,
   .famous-links {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 2026-08 三期：六套角色页风格（按分组分配） ---------- */
+
+.character-head {
+  position: relative;
+}
+
+.style-royal {
+  --style-accent: #a8863b;
+  --style-accent-deep: #7a5c22;
+  --style-mono: #efe6cf;
+}
+.style-royal .character-head {
+  border-bottom: 2px solid var(--style-accent);
+  background: linear-gradient(180deg, rgba(168, 134, 59, 0.09), transparent 70%);
+}
+.style-royal .character-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 5.5rem;
+  height: 2px;
+  background: var(--style-accent);
+}
+.style-royal .story-item::before {
+  border-radius: 2px;
+}
+.style-royal .quote,
+.style-royal .evaluation {
+  border-left: 3px double var(--style-accent);
+}
+
+.style-center {
+  --style-accent: #5b5f8a;
+  --style-accent-deep: #3f4264;
+  --style-mono: #e6e4ef;
+}
+.style-center .character-head::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -0.4rem;
+  width: 5.2rem;
+  height: 5.2rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 134, 59, 0.28), rgba(168, 134, 59, 0.05) 62%, transparent 70%);
+}
+.style-center .character-head {
+  border-bottom: 1px solid var(--style-accent);
+}
+.style-center .story-item::before {
+  width: 9px;
+  height: 9px;
+  box-shadow: inset 0 0 0 3px var(--paper);
+}
+.style-center .quote,
+.style-center .evaluation {
+  background: #f2f1f7;
+}
+
+.style-wives {
+  --style-accent: #8a63b0;
+  --style-accent-deep: #624a86;
+  --style-mono: #ece4f2;
+}
+.style-wives .character-head::after {
+  content: '';
+  position: absolute;
+  right: 0.2rem;
+  top: 0.2rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--style-accent);
+  box-shadow:
+    1.2rem 0.4rem 0 -0.12rem var(--style-accent),
+    0.5rem 1.3rem 0 -0.12rem var(--style-accent),
+    2.1rem 1.1rem 0 -0.12rem var(--style-accent);
+  opacity: 0.55;
+}
+.style-wives .story-item::before {
+  box-shadow: 0 0 0 3px rgba(138, 99, 176, 0.18);
+}
+.style-wives .quote,
+.style-wives .evaluation {
+  background: #f6f1fa;
+}
+
+.style-children {
+  --style-accent: #4f8f83;
+  --style-accent-deep: #35665e;
+  --style-mono: #e2efec;
+}
+.style-children .character-head::after {
+  content: '';
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 1.5px dashed var(--style-accent);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+.style-children .story-item::before {
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.style-children .quote,
+.style-children .evaluation {
+  background: #f0f7f5;
+}
+
+.style-minister {
+  --style-accent: #b23a2c;
+  --style-accent-deep: #7f2a20;
+  --style-mono: #f0e3df;
+}
+.style-minister .character-head {
+  border-bottom: 4px double var(--style-accent);
+}
+.style-minister .character-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--style-accent) 0 6px,
+    transparent 6px 12px
+  );
+  opacity: 0.35;
+}
+.style-minister .story-item::before {
+  width: 13px;
+  height: 2px;
+  border-radius: 1px;
+  top: 0.8rem;
+}
+.style-minister .quote,
+.style-minister .evaluation {
+  background: #faf1ee;
+}
+
+.style-uji {
+  --style-accent: #3f6f9e;
+  --style-accent-deep: #2c4f73;
+  --style-mono: #e2eaf0;
+}
+.style-uji .character-head::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1.2rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(63, 111, 158, 0.55), transparent);
+}
+.style-uji .character-head {
+  border-bottom: 1px solid var(--style-accent);
+}
+.style-uji .story-item::before {
+  background: transparent;
+  border: 1.5px solid var(--style-accent);
+  box-shadow: 0 0 0 3px rgba(63, 111, 158, 0.12);
+}
+.style-uji .quote,
+.style-uji .evaluation {
+  background: #f0f4f8;
+  border-radius: 0 10px 10px 0;
+}
+
+/* ---------- 生平：生卒、年龄与余韵 ---------- */
+
+.life-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 1.4rem;
+  margin-bottom: 2rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--style-accent);
+}
+
+.life-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0;
+}
+
+.life-item p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.8;
+}
+
+.life-kind {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--style-accent);
+  color: var(--paper-soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+}
+
+.life-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--ink-faint);
+  line-height: 1.8;
+}
+
+.life-link {
+  grid-column: 1 / -1;
+  justify-self: start;
+  font-size: 0.86rem;
+  color: var(--style-accent-deep);
+  border-bottom: 1px solid var(--style-accent);
+  padding-bottom: 0.05rem;
+}
+
+.story-age {
+  display: inline-block;
+  margin-right: 0.55rem;
+  padding: 0.04rem 0.65rem;
+  border: 1px solid var(--style-accent);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--style-accent-deep);
+  white-space: nowrap;
+  vertical-align: 0.12em;
+}
+
+.story-aftermath {
+  display: block;
+  margin-top: 0.55rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--paper-soft);
+  border-left: 2px solid var(--style-accent);
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.85;
+}
+
+/* ---------- 评说分级与延伸阅读 ---------- */
+
+.evaluation-kind {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  padding: 0.05rem 0.7rem;
+  border: 1px solid var(--fuji);
+  border-radius: 999px;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  color: var(--fuji);
+}
+
+.evaluation-original .evaluation-kind {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+}
+
+.evaluation-analysis .evaluation-kind {
+  border-color: var(--celadon);
+  color: var(--celadon-deep);
+}
+
+.evaluation footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.evaluation-link {
+  font-size: 0.84rem;
+  color: var(--celadon-deep);
+  border-bottom: 1px solid var(--celadon);
+  padding-bottom: 0.05rem;
+}
+
+.evaluation-link:hover {
+  color: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.reference-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.reference-list a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding: 0.8rem 1rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  transition: border-color 0.2s ease;
+}
+
+.reference-list a:hover {
+  border-color: var(--style-accent);
+}
+
+.reference-title {
+  font-weight: 500;
+}
+
+.reference-note {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+.reference-url {
+  font-size: 0.8rem;
+  color: var(--celadon-deep);
+}
+
+/* ---------- 平安官职与称谓小注 ---------- */
+
+.term-glossary {
+  margin-top: 2.6rem;
+  border: 1px solid var(--line);
+  background: var(--paper-soft);
+}
+
+.term-glossary summary {
+  cursor: pointer;
+  padding: 0.8rem 1rem;
+  font-size: 0.92rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+
+.term-glossary summary:hover {
+  color: var(--style-accent-deep);
+}
+
+.term-glossary dl {
+  margin: 0;
+  padding: 0 1rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 1.4rem;
+}
+
+.term-glossary dt {
+  font-weight: 500;
+  color: var(--style-accent-deep);
+  margin-bottom: 0.15rem;
+}
+
+.term-glossary dd {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+
+/* ---------- 首页：时代背景入口与年立链接 ---------- */
+
+.home-quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.1rem;
+}
+
+.quicklink {
+  padding: 0.45rem 1.15rem;
+  border: 1px solid var(--celadon);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: var(--celadon-deep);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.quicklink:hover {
+  background: var(--celadon);
+  color: var(--paper-soft);
+}
+
+.heian-gate {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 clamp(1.2rem, 4vw, 3rem) var(--space);
+}
+
+.heian-gate-card {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.7rem;
+}
+
+.heian-gate-intro h3 {
+  font-size: 1.15rem;
+  letter-spacing: 0.16em;
+  margin-bottom: 0.8rem;
+}
+
+.heian-gate-intro p {
+  color: var(--ink-soft);
+  line-height: 2;
+  margin-bottom: 1rem;
+}
+
+.heian-gate-link {
+  display: inline-block;
+  color: var(--vermilion);
+  border-bottom: 1px solid var(--vermilion);
+  padding-bottom: 0.1rem;
+}
+
+.heian-gate-preview {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  align-content: start;
+}
+
+.heian-gate-preview li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+}
+
+.heian-gate-preview span {
+  font-weight: 500;
+}
+
+.heian-gate-preview small {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+/* ---------- 年立页 ---------- */
+
+.chronology-page {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.2rem, 4vw, 3rem) var(--space);
+}
+
+.chronology-eyebrow,
+.heian-eyebrow {
+  font-size: 0.84rem;
+  letter-spacing: 0.34em;
+  color: var(--celadon-deep);
+  margin-bottom: 0.8rem;
+}
+
+.chronology-head h1,
+.heian-head h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+  letter-spacing: 0.16em;
+  margin-bottom: 1rem;
+}
+
+.chronology-lead,
+.heian-lead {
+  max-width: 46rem;
+  color: var(--ink-soft);
+  line-height: 2;
+}
+
+.chronology-section,
+.heian-section {
+  margin-top: 3rem;
+}
+
+.chronology-section h2,
+.heian-section h2 {
+  font-size: 1.15rem;
+  letter-spacing: 0.3em;
+  padding-left: 0.85rem;
+  border-left: 3px solid var(--celadon);
+  margin-bottom: 1.1rem;
+}
+
+.chronology-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  background: var(--paper-soft);
+}
+
+.chronology-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.chronology-table th {
+  background: var(--paper-deep);
+  text-align: left;
+  padding: 0.65rem 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.chronology-table td {
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.75;
+}
+
+.chron-num {
+  width: 3.2rem;
+  color: var(--ink-faint);
+}
+
+.chron-name {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chron-name a {
+  color: var(--vermilion);
+  border-bottom: 1px solid var(--vermilion);
+  padding-bottom: 0.05rem;
+}
+
+.chron-age {
+  color: var(--celadon-deep);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chron-note {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+
+.chronology-note {
+  margin-top: 1rem;
+  font-size: 0.86rem;
+  color: var(--ink-faint);
+  line-height: 1.9;
+}
+
+/* ---------- 平安文学专页 ---------- */
+
+.heian-page {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.2rem, 4vw, 3rem) var(--space);
+}
+
+.heian-section p {
+  color: var(--ink-soft);
+  line-height: 2.05;
+  max-width: 58rem;
+}
+
+.heian-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.4rem 2rem;
+}
+
+.heian-item {
+  border-left: 2px solid var(--celadon);
+  padding: 0.35rem 0 0.35rem 1.1rem;
+}
+
+.heian-item h3 {
+  font-size: 1.08rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.15rem;
+}
+
+.heian-jp {
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  margin: 0 0 0.45rem;
+}
+
+.heian-meta {
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  color: var(--celadon-deep);
+  margin-bottom: 0.45rem;
+}
+
+.heian-note {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.85;
+}
+
+.heian-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.heian-links a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  transition: border-color 0.2s ease;
+}
+
+.heian-links a:hover {
+  border-color: var(--celadon);
+}
+
+.heian-links span {
+  font-weight: 500;
+}
+
+.heian-links small {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+/* ---------- 和风化文字与清晰度微调 ---------- */
+
+body {
+  line-height: 1.95;
+}
+
+.character-identity {
+  font-size: 1.04rem;
+}
+
+.quote-jp {
+  letter-spacing: 0.04em;
+}
+
+.theme-waka {
+  font-size: 1.05rem;
+}
+
+@media (max-width: 720px) {
+  .life-box,
+  .heian-gate-card,
+  .heian-grid,
+  .heian-links,
+  .term-glossary dl {
+    grid-template-columns: 1fr;
+  }
+
+  .life-note,
+  .life-link {
+    grid-column: auto;
   }
 }
